@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="headerTextSize">@dimen/_30sdp</dimen>
+    <dimen name="normalTextSize">@dimen/_13sdp</dimen>
+    <dimen name="mainLayoutPadding">@dimen/_10sdp</dimen>
+    <dimen name="viewMinWidth">@dimen/_40sdp</dimen>
+    <dimen name="iconSize">@dimen/_35sdp</dimen>
+</resources>

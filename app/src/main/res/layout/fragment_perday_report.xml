@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+        <variable
+            name="data"
+            type="com.ajijul.network.data.forecast.ThreeHoursModel" />
+
+        <variable
+            name="main"
+            type="com.ajijul.network.data.forecast.ForecastBaseModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weatherFragment_tvCityName"
+            style="@style/NormalTextStyle"
+            android:minWidth="@dimen/viewMinWidth"
+            android:textSize="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@{main.city.name +`\n `+ main.city.country}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weatherFragment_tvMinTemp"
+            style="@style/NormalTextStyle"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:drawableTop="@drawable/ic_min_temperature"
+            android:text="@{data.main._temp_min, default=@string/loading}"
+            app:layout_constraintEnd_toStartOf="@+id/weatherFragment_tvMaxTemp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherFragment_tvCityName" />
+
+        <TextView
+            android:id="@+id/weatherFragment_tvMaxTemp"
+            style="@style/NormalTextStyle"
+            android:layout_width="0dp"
+            android:drawableTop="@drawable/ic_max_temperature"
+            android:text="@{data.main._temp_max, default=@string/loading}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/weatherFragment_tvMinTemp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/weatherFragment_tvMinTemp" />
+
+        <TextView
+            android:id="@+id/weatherFragment_tvWind"
+            style="@style/NormalTextStyle"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:drawableTop="@drawable/ic_wind"
+            android:text="@{String.valueOf(data.wind.speed) +` KT`, default=@string/loading}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherFragment_tvMaxTemp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/mpLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:clickable="false"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:focusableInTouchMode="false"
+            app:layout_constraintBottom_toTopOf="@+id/llFooter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llFooter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_weight=".1"
+            android:background="@color/weather_tab_selected"
+            android:orientation="horizontal"
+            android:paddingStart="2dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
