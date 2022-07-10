@@ -9,12 +9,11 @@ import android.widget.TableLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentPerdayReportBinding
-import com.ajijul.network.data.forecast.ThreeHoursModel
 import com.ajijul.network.data.forecast.ForecastBaseModel
+import com.ajijul.network.data.forecast.ThreeHoursModel
 import com.ajijul.network.utils.ResultWrapper
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry

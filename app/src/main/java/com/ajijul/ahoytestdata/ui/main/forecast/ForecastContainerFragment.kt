@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
@@ -23,6 +22,7 @@ import com.ajijul.ahoytestdata.utils.Constants.REQUEST_CHECK_SETTINGS
 import com.ajijul.ahoytestdata.utils.MarshmallowPermissionHelper
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.forecast.ThreeHoursModel
+import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -93,7 +93,8 @@ class ForecastContainerFragment : BaseFragment() {
 
         forevcastViewModel.getForecastResult()
             .removeObservers(viewLifecycleOwner)
-        forevcastViewModel.observeForecast(lat, lon, Constants.API_KEY)
+        forevcastViewModel.observeForecast(lat, lon, Constants.API_KEY,
+            Network.checkConnectivity(requireContext()))
             .observe(viewLifecycleOwner) {
                 if (it != null) {
                     when (it) {

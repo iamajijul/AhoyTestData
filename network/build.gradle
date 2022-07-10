@@ -45,7 +45,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     //Gson
-    implementation "com.google.code.gson:gson:$gson_version"
+    api "com.google.code.gson:gson:$gson_version"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

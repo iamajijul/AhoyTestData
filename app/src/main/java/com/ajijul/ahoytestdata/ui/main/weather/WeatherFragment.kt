@@ -13,6 +13,7 @@ import com.ajijul.ahoytestdata.databinding.FragmentWeatherBinding
 import com.ajijul.ahoytestdata.utils.Constants
 import com.ajijul.ahoytestdata.utils.Helper
 import com.ajijul.ahoytestdata.utils.ScreenState
+import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather.*
@@ -78,7 +79,10 @@ class WeatherFragment : BaseFragment() {
 
     private fun getWeather(p0: String?) {
         weatherViewModel.getWeatherObserver().removeObservers(viewLifecycleOwner)
-        weatherViewModel.observeWeather(p0 ?: "Dubai", Constants.API_KEY)
+        weatherViewModel.observeWeather(
+            p0 ?: "Dubai", Constants.API_KEY,
+            Network.checkConnectivity(requireContext())
+        )
             .observe(viewLifecycleOwner) {
 
                 if (it != null) {
