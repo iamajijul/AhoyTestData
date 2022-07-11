@@ -9,8 +9,10 @@ import com.ajijul.ahoytestdata.base.BaseViewModel
 import com.ajijul.ahoytestdata.store.DataStoreRepository
 import com.ajijul.ahoytestdata.store.FAVORITE_LIST
 import com.ajijul.ahoytestdata.store.LAST_CURRENT_LOCATION_DATA
+import com.ajijul.ahoytestdata.utils.Constants
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.weather.WeatherBaseModel
+import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,15 +39,14 @@ class WeatherViewModel @Inject constructor(
         return weather
     }
 
-    fun observeWeather(
+    fun fetchWeather(
         cityName: String,
         apiKey: String,
         giveMeRemote: Boolean
-    ): LiveData<ResultWrapper<WeatherBaseModel>> {
-
+    ){
         if (weather.value != null && weather.value is ResultWrapper.Success<WeatherBaseModel>
             && (weather.value as ResultWrapper.Success<WeatherBaseModel>).value.name == cityName
-        ) return weather
+        ) return
         viewModelScope.launch {
             screenState.value = ScreenState.LOADING
             val localData = dataStoreRepository.getString(LAST_CURRENT_LOCATION_DATA)
@@ -66,8 +67,6 @@ class WeatherViewModel @Inject constructor(
                 }
             )
         }
-
-        return weather
     }
 
     fun observeScreenState(): LiveData<ScreenState> {

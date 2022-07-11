@@ -9,7 +9,6 @@ import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentWeatherBinding
@@ -21,7 +20,6 @@ import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather.*
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -40,18 +38,30 @@ class WeatherFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        weatherViewModel.fetchWeather(
+            "Dubai", Constants.API_KEY,
+            Network.checkConnectivity(requireContext())
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObsever()
         initializeListener()
-        getWeather("Dubai")
     }
 
     private fun initializeListener() {
         weatherFragment_searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 Helper.hideKeyboard(activity)
-                getWeather(p0)
+                p0?.let {
+                    weatherViewModel.fetchWeather(
+                        it, Constants.API_KEY,
+                        Network.checkConnectivity(requireContext())
+                    )
+                }
                 return true
             }
 
@@ -86,57 +96,44 @@ class WeatherFragment : BaseFragment() {
                 }
             }
         }
-
+        getWeather()
     }
 
 
-    private fun getWeather(p0: String?) {
-        weatherViewModel.getWeatherObserver().removeObservers(viewLifecycleOwner)
-        weatherViewModel.observeWeather(
-            p0 ?: "Dubai", Constants.API_KEY,
-            Network.checkConnectivity(requireContext())
-        )
-            .observe(viewLifecycleOwner) {
-
-                if (it != null) {
-                    when (it) {
-                        is ResultWrapper.Success -> {
-                            manipulateFavouriteButton(p0)
-                            binding.data = it.value
-                            mainView?.let { it1 ->
-                                messageHandlerImp.showSnackSuccess(
-                                    it1,
-                                    R.string.succesfullyFetch,
-                                    true
-                                )
-                            }
+    private fun getWeather() {
+        weatherViewModel.getWeatherObserver().observe(viewLifecycleOwner){
+            if (it != null) {
+                when (it) {
+                    is ResultWrapper.Success -> {
+                        manipulateFavouriteButton(it.value.name)
+                        binding.data = it.value
+                        mainView?.let { it1 ->
+                            messageHandlerImp.showSnackSuccess(
+                                it1,
+                                R.string.succesfullyFetch,
+                                true
+                            )
                         }
-                        is ResultWrapper.GenericError -> {
+                    }
+                    is ResultWrapper.GenericError -> {
 
-                            mainView?.let { it1 ->
-                                messageHandlerImp.showSnackErrorWithAction(it1, it.error ?: "") {
-                                    getWeather(p0)
-
-                                }
-                            }
-
+                        mainView?.let { it1 ->
+                            messageHandlerImp.showSnackErrorWithAction(it1, it.error ?: "") {}
                         }
-                        ResultWrapper.NetworkError -> {
 
-                            mainView?.let { it1 ->
-                                messageHandlerImp.showSnackErrorWithAction(
-                                    it1,
-                                    R.string.retry_text
-                                ) {
+                    }
+                    ResultWrapper.NetworkError -> {
 
-                                }
-                            }
+                        mainView?.let { it1 ->
+                            messageHandlerImp.showSnackErrorWithAction(
+                                it1,
+                                R.string.retry_text
+                            ) {}
                         }
                     }
                 }
             }
-
-
+        }
     }
 
     private fun manipulateFavouriteButton(p0: String?) {

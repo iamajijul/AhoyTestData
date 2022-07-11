@@ -44,15 +44,15 @@
 
         <ToggleButton
             android:id="@+id/favButton"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center"
             android:layout_weight="0.33"
             android:background="@drawable/fav_selector"
             android:textOff=""
             android:textOn=""
             app:layout_constraintBottom_toBottomOf="@+id/weatherFragment_tvCityName"
-            app:layout_constraintStart_toEndOf="@+id/weatherFragment_tvCityName"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/weatherFragment_tvCityName" />
 
         <TextView
