@@ -26,19 +26,30 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class ForecastPerDayReportFragment(val position: Int) : BaseFragment() {
+class ForecastPerDayReportFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPerdayReportBinding
     private val forevcastViewModel: ForecastViewModel by activityViewModels()
     private val format = SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault())
     private val outFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+    private var position = 0;
+
+    companion object {
+        private const val POSITION_ARGUMENT = "arg_position"
+        fun instance(position: Int): ForecastPerDayReportFragment {
+            val data = Bundle()
+            data.putInt(POSITION_ARGUMENT, position)
+            return ForecastPerDayReportFragment().apply {
+                arguments = data
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_perday_report, container, false)
         return binding.root
@@ -46,6 +57,7 @@ class ForecastPerDayReportFragment(val position: Int) : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        position = arguments?.getInt(POSITION_ARGUMENT) ?: 0
         configureChart()
         observeGroupData()
     }

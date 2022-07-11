@@ -12,7 +12,7 @@ class PagerAdapter(
 
     // This determines the fragment for each tab
     override fun getItem(position: Int): Fragment {
-        return ForecastPerDayReportFragment(position)
+        return ForecastPerDayReportFragment.instance(position)
     }
 
     // This determines the number of tabs
