@@ -29,7 +29,6 @@ class WeatherViewModel @Inject constructor(
 
     init {
         fetchForCity("Dubai")
-        Log.d(TAG, "Weather ViewModel")
     }
 
     fun getWeatherObserver(): LiveData<ResultWrapper<WeatherBaseModel>> {
