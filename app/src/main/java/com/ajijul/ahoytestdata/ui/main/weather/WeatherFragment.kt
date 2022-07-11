@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentWeatherBinding
+import com.ajijul.ahoytestdata.ui.main.favourite.FavourViewModel
 import com.ajijul.ahoytestdata.utils.Constants
 import com.ajijul.ahoytestdata.utils.Helper
 import com.ajijul.ahoytestdata.utils.ScreenState
@@ -26,8 +28,8 @@ import kotlinx.coroutines.launch
 class WeatherFragment : BaseFragment() {
 
     private val weatherViewModel: WeatherViewModel by viewModels()
+    private val favourViewModel: FavourViewModel by activityViewModels()
     lateinit var binding: FragmentWeatherBinding
-    private var favouriteList: HashSet<String> = HashSet()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,10 +44,7 @@ class WeatherFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObsever()
         initializeListener()
-        lifecycleScope.launch {
-            favouriteList = weatherViewModel.getFavouriteList()
-            getWeather("Dubai")
-        }
+        getWeather("Dubai")
     }
 
     private fun initializeListener() {
@@ -68,9 +67,11 @@ class WeatherFragment : BaseFragment() {
         }
 
         favButton.setOnCheckedChangeListener { _, b ->
-            Log.e("TAG",favButton.tag.toString() +"   " + b.toString())
-            if (b) favouriteList.add(favButton.tag.toString()) else favouriteList.remove(favButton.tag.toString())
-            weatherViewModel.setFavouriteList(favouriteList)
+            Log.e("TAG", favButton.tag.toString() + "   " + b.toString())
+            favButton.tag?.let {
+                if (b) favourViewModel.addToFavouriteList(favButton.tag.toString())
+                else favourViewModel.removeToFavouriteList(favButton.tag.toString())
+            }
         }
     }
 
@@ -140,7 +141,7 @@ class WeatherFragment : BaseFragment() {
 
     private fun manipulateFavouriteButton(p0: String?) {
         favButton.tag = p0
-        favButton.isChecked = favouriteList.contains(p0)
+        favButton.isChecked = p0?.let { favourViewModel.isMyFavouriteCity(it) } ?: false
     }
 
     private fun handleProgress(isShow: Boolean) {

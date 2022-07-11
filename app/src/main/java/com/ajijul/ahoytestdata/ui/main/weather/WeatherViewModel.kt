@@ -3,6 +3,7 @@ package com.ajijul.ahoytestdata.ui.main.weather
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
 import com.ajijul.ahoytestdata.store.DataStoreRepository
@@ -30,12 +31,6 @@ class WeatherViewModel @Inject constructor(
 
     init {
         Log.d(TAG, "Weather ViewModel")
-    }
-
-    fun setFavouriteList(favList : HashSet<String>) {
-        viewModelScope.launch {
-           dataStoreRepository.putStringStringArray(FAVORITE_LIST,favList)
-        }
     }
 
     fun getWeatherObserver(): LiveData<ResultWrapper<WeatherBaseModel>> {
@@ -78,12 +73,4 @@ class WeatherViewModel @Inject constructor(
     fun observeScreenState(): LiveData<ScreenState> {
         return screenState
     }
-
-    suspend fun getFavouriteList(): HashSet<String> {
-        return withContext(viewModelScope.coroutineContext) {
-            dataStoreRepository.getStringArray(FAVORITE_LIST)
-        }
-    }
-
-
 }

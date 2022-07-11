@@ -29,35 +29,35 @@ class DataStoreRepositoryImplementation @Inject constructor(
         }
     }
 
-    override suspend fun putStringStringArray(key: String, value: Set<String>) {
+    override suspend fun putStringStringArray(key: String, value: ArrayList<String>) {
         val preferencesKey = stringPreferencesKey(key)
         context.dataStore.edit { preferences ->
             preferences[preferencesKey] = convertArrayToString(value)
         }
     }
 
-    override suspend fun getStringArray(key: String): HashSet<String> {
+    override suspend fun getStringArray(key: String): ArrayList<String> {
         return try {
             val preferencesKey = stringPreferencesKey(key)
             val preferences = context.dataStore.data.first()
             convertStringToArray(preferences[preferencesKey])
         } catch (e: Exception) {
             e.printStackTrace()
-            hashSetOf()
+            arrayListOf()
         }
     }
 
-    private fun convertArrayToString(value: Set<String>): String {
+    private fun convertArrayToString(value: ArrayList<String>): String {
         return value.joinToString(
             separator = ",",
             transform = { it })
     }
 
-    private fun convertStringToArray(value: String?): HashSet<String> {
+    private fun convertStringToArray(value: String?): ArrayList<String> {
         with(
-            if (value?.isNotEmpty() == true) value.split(',') else return hashSetOf()
+            if (value?.isNotEmpty() == true) value.split(',') else return arrayListOf()
         ) {
-            return HashSet(this)
+            return ArrayList(this)
         }
     }
 }

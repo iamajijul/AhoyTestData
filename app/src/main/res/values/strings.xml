@@ -7,5 +7,6 @@
     <string name="retry_text">Retry</string>
     <string name="loading">...</string>
     <string name="succesfullyFetch">Suceesfully fetch information</string>
+    <string name="favourite">Favourite</string>
 
 </resources>

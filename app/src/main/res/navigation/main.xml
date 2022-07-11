@@ -17,4 +17,10 @@
         android:label="@string/forecast"
         tools:layout="@layout/fragment_forecast" />
 
+    <fragment
+        android:id="@+id/favourite_screen"
+        android:name="com.ajijul.ahoytestdata.ui.main.favourite.FavouriteFragment"
+        android:label="@string/favourite"
+        tools:layout="@layout/fragment_favourite" />
+
 </navigation>
