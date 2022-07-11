@@ -1,12 +1,14 @@
 package com.ajijul.ahoytestdata.ui.main.weather
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentWeatherBinding
@@ -17,6 +19,7 @@ import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather.*
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -24,6 +27,7 @@ class WeatherFragment : BaseFragment() {
 
     private val weatherViewModel: WeatherViewModel by viewModels()
     lateinit var binding: FragmentWeatherBinding
+    private var favouriteList: HashSet<String> = HashSet()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,11 +42,13 @@ class WeatherFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObsever()
         initializeListener()
-        getWeather("Dubai")
+        lifecycleScope.launch {
+            favouriteList = weatherViewModel.getFavouriteList()
+            getWeather("Dubai")
+        }
     }
 
     private fun initializeListener() {
-
         weatherFragment_searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 Helper.hideKeyboard(activity)
@@ -59,6 +65,12 @@ class WeatherFragment : BaseFragment() {
         weatherFragment_searchView.setOnClickListener {
             weatherFragment_searchView.isIconified =
                 false
+        }
+
+        favButton.setOnCheckedChangeListener { _, b ->
+            Log.e("TAG",favButton.tag.toString() +"   " + b.toString())
+            if (b) favouriteList.add(favButton.tag.toString()) else favouriteList.remove(favButton.tag.toString())
+            weatherViewModel.setFavouriteList(favouriteList)
         }
     }
 
@@ -88,6 +100,7 @@ class WeatherFragment : BaseFragment() {
                 if (it != null) {
                     when (it) {
                         is ResultWrapper.Success -> {
+                            manipulateFavouriteButton(p0)
                             binding.data = it.value
                             mainView?.let { it1 ->
                                 messageHandlerImp.showSnackSuccess(
@@ -123,6 +136,11 @@ class WeatherFragment : BaseFragment() {
             }
 
 
+    }
+
+    private fun manipulateFavouriteButton(p0: String?) {
+        favButton.tag = p0
+        favButton.isChecked = favouriteList.contains(p0)
     }
 
     private fun handleProgress(isShow: Boolean) {

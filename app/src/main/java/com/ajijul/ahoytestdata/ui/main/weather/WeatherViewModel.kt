@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
 import com.ajijul.ahoytestdata.store.DataStoreRepository
+import com.ajijul.ahoytestdata.store.FAVORITE_LIST
 import com.ajijul.ahoytestdata.store.LAST_CURRENT_LOCATION_DATA
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.weather.WeatherBaseModel
@@ -13,6 +14,7 @@ import com.ajijul.network.utils.ResultWrapper
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,13 +24,18 @@ class WeatherViewModel @Inject constructor(
     var gson: Gson
 ) :
     BaseViewModel() {
-
     private var weather = MutableLiveData<ResultWrapper<WeatherBaseModel>>()
     val TAG = "Weather ViewModel"
 
 
     init {
         Log.d(TAG, "Weather ViewModel")
+    }
+
+    fun setFavouriteList(favList : HashSet<String>) {
+        viewModelScope.launch {
+           dataStoreRepository.putStringStringArray(FAVORITE_LIST,favList)
+        }
     }
 
     fun getWeatherObserver(): LiveData<ResultWrapper<WeatherBaseModel>> {
@@ -44,7 +51,6 @@ class WeatherViewModel @Inject constructor(
         if (weather.value != null && weather.value is ResultWrapper.Success<WeatherBaseModel>
             && (weather.value as ResultWrapper.Success<WeatherBaseModel>).value.name == cityName
         ) return weather
-
         viewModelScope.launch {
             screenState.value = ScreenState.LOADING
             val localData = dataStoreRepository.getString(LAST_CURRENT_LOCATION_DATA)
@@ -71,6 +77,12 @@ class WeatherViewModel @Inject constructor(
 
     fun observeScreenState(): LiveData<ScreenState> {
         return screenState
+    }
+
+    suspend fun getFavouriteList(): HashSet<String> {
+        return withContext(viewModelScope.coroutineContext) {
+            dataStoreRepository.getStringArray(FAVORITE_LIST)
+        }
     }
 
 
