@@ -1,10 +1,9 @@
-package com.ajijul.ahoytestdata.store
+package com.ajijul.store.repo
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.ajijul.ahoytestdata.utils.dataStore
+import com.ajijul.store.utils.dataStore
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

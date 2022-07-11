@@ -3,27 +3,22 @@ package com.ajijul.ahoytestdata.ui.main.weather
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
-import com.ajijul.ahoytestdata.store.DataStoreRepository
-import com.ajijul.ahoytestdata.store.FAVORITE_LIST
+import com.ajijul.store.repo.DataStoreRepository
 import com.ajijul.ahoytestdata.store.LAST_CURRENT_LOCATION_DATA
-import com.ajijul.ahoytestdata.utils.Constants
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.weather.WeatherBaseModel
-import com.ajijul.network.utils.Network
 import com.ajijul.network.utils.ResultWrapper
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     var weatherRepo: WeatherRepository,
-    var dataStoreRepository: DataStoreRepository,
+    var dataStoreRepository: com.ajijul.store.repo.DataStoreRepository,
     var gson: Gson
 ) :
     BaseViewModel() {

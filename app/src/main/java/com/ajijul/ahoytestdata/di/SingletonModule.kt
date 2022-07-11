@@ -1,8 +1,8 @@
 package com.ajijul.ahoytestdata.di
 
 import android.content.Context
-import com.ajijul.ahoytestdata.store.DataStoreRepository
-import com.ajijul.ahoytestdata.store.DataStoreRepositoryImplementation
+import com.ajijul.store.repo.DataStoreRepository
+import com.ajijul.store.repo.DataStoreRepositoryImplementation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +17,7 @@ object SingletonModule {
     @Provides
     fun provideDataStoreRepository(
         @ApplicationContext app: Context
-    ): DataStoreRepository = DataStoreRepositoryImplementation(app)
+    ): com.ajijul.store.repo.DataStoreRepository =
+        com.ajijul.store.repo.DataStoreRepositoryImplementation(app)
 
 }

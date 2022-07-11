@@ -1,4 +1,4 @@
-package com.ajijul.ahoytestdata.store
+package com.ajijul.store.repo
 
 interface DataStoreRepository {
     suspend fun putString(key: String, value: String)
