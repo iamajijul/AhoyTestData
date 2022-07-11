@@ -22,7 +22,7 @@ class PagerAdapter(
 
     // This determines the title for each tab
     override fun getPageTitle(position: Int): CharSequence? {
-        return ArrayList(threeHoursModels.keys).get(position)
+        return ArrayList(threeHoursModels.keys)[position]
     }
 
 }

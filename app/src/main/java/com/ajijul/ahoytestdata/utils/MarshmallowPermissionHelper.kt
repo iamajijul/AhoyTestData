@@ -21,8 +21,6 @@ object MarshmallowPermissionHelper {
         activity: Activity,
         REQUEST_CODE: Int
     ): Boolean {
-        var context: Context? = null
-        context = if (fragment != null) fragment.context else activity
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Here, thisActivity is the current activity
             if (ContextCompat.checkSelfPermission(
@@ -56,7 +54,7 @@ object MarshmallowPermissionHelper {
                     )
                     builder.setPositiveButton(
                         "Got it"
-                    ) { dialog, which ->
+                    ) { dialog, _ ->
                         dialog.dismiss()
                         if (fragment != null) fragment.requestPermissions(
                             arrayOf(

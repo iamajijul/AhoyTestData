@@ -6,15 +6,13 @@ import com.ajijul.network.repos.BaseRepository
 import com.ajijul.network.utils.ResultWrapper
 import javax.inject.Inject
 
-class ForecastRepoImpl @Inject constructor(var mainApi: MainApi) : BaseRepository(),
+class ForecastRepoImpl @Inject constructor(private var mainApi: MainApi) : BaseRepository(),
     ForecastRepository {
     override suspend fun getForecastOfMyCurrentLocation(
         lat: String,
         lon: String,
         apiKey: String
-    ): ResultWrapper<ForecastBaseModel>? {
+    ): ResultWrapper<ForecastBaseModel> {
         return safeApiCall { mainApi.getForecastOfMyCurrentLocation(lat,lon, apiKey) }
     }
-
-
 }

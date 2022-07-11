@@ -1,11 +1,9 @@
 package com.ajijul.ahoytestdata.ui.main.favourite
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
-import com.ajijul.store.repo.DataStoreRepository
 import com.ajijul.ahoytestdata.store.FAVORITE_LIST
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,13 +15,10 @@ class FavourViewModel @Inject constructor(
 ) :
     BaseViewModel() {
     private var favouriteList: MutableLiveData<ArrayList<String>> = MutableLiveData()
-    var _favouriteList: LiveData<ArrayList<String>> = favouriteList
-
-    val TAG = "Favourite ViewModel"
+    var favouriteListObservable: LiveData<ArrayList<String>> = favouriteList
 
     init {
         getFavouriteList()
-        Log.d(TAG, "Favourite ViewModel")
     }
 
     private fun getFavouriteList() {

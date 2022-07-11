@@ -1,11 +1,9 @@
 package com.ajijul.ahoytestdata.ui.main.weather
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
-import com.ajijul.store.repo.DataStoreRepository
 import com.ajijul.ahoytestdata.store.LAST_CURRENT_LOCATION_DATA
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.weather.WeatherBaseModel
@@ -17,15 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    var weatherRepo: WeatherRepository,
-    var dataStoreRepository: com.ajijul.store.repo.DataStoreRepository,
-    var gson: Gson
+    private var weatherRepo: WeatherRepository,
+    private var dataStoreRepository: com.ajijul.store.repo.DataStoreRepository,
+    private var gson: Gson
 ) :
     BaseViewModel() {
     private var weather = MutableLiveData<ResultWrapper<WeatherBaseModel>>()
     private var fetchForCity = MutableLiveData<String>()
-    val TAG = "Weather ViewModel"
-
 
     init {
         fetchForCity("Dubai")

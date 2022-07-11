@@ -36,7 +36,7 @@ class FavouriteFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
-        favourViewModel._favouriteList.observe(viewLifecycleOwner) {
+        favourViewModel.favouriteListObservable.observe(viewLifecycleOwner) {
             adapter.informMe(it)
         }
     }

@@ -6,12 +6,12 @@ import com.ajijul.network.repos.BaseRepository
 import com.ajijul.network.utils.ResultWrapper
 import javax.inject.Inject
 
-class WeatherRepoImpl @Inject constructor(var mainApi: MainApi) : BaseRepository(),
+class WeatherRepoImpl @Inject constructor(private var mainApi: MainApi) : BaseRepository(),
     WeatherRepository {
     override suspend fun getWeatherOfParticularCity(
         cityName: String,
         apiKey: String
-    ): ResultWrapper<WeatherBaseModel>? {
+    ): ResultWrapper<WeatherBaseModel> {
         return safeApiCall { mainApi.getWeatherOfParticularCity(cityName, apiKey) }
     }
 }

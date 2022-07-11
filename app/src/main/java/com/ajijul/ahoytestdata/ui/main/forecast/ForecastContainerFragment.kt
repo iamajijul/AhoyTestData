@@ -45,8 +45,8 @@ class ForecastContainerFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         handleLocation()
         subscribeToObsever()
     }
@@ -59,7 +59,7 @@ class ForecastContainerFragment : BaseFragment() {
     }
 
     private fun handleLocation() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context ?: return);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context ?: return)
         if (MarshmallowPermissionHelper.getLocationPermission(
                 this,
                 activity!!, LOCATION_PERMISSION_ID
@@ -70,7 +70,7 @@ class ForecastContainerFragment : BaseFragment() {
     }
 
     private fun subscribeToObsever() {
-        forevcastViewModel.observeScreenState().observe(viewLifecycleOwner, Observer {
+        forevcastViewModel.observeScreenState().observe(viewLifecycleOwner) {
             if (it != null) {
 
                 when (it) {
@@ -79,7 +79,7 @@ class ForecastContainerFragment : BaseFragment() {
                     ScreenState.ERROR -> handleProgress(false)
                 }
             }
-        })
+        }
 
         forevcastViewModel.observeGroupData().observe(viewLifecycleOwner) {
             if (it != null) {

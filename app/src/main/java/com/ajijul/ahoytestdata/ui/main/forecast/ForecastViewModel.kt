@@ -1,11 +1,9 @@
 package com.ajijul.ahoytestdata.ui.main.forecast
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ajijul.ahoytestdata.base.BaseViewModel
-import com.ajijul.store.repo.DataStoreRepository
 import com.ajijul.ahoytestdata.store.LAST_CURRENT_LOCATION_FORECAST_DATA
 import com.ajijul.ahoytestdata.utils.ScreenState
 import com.ajijul.network.data.forecast.ForecastBaseModel
@@ -20,23 +18,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
-    var forecastRepo: ForecastRepository,
-    var dataStoreRepository: com.ajijul.store.repo.DataStoreRepository,
-    var gson: Gson
+    private var forecastRepo: ForecastRepository,
+    private var dataStoreRepository: com.ajijul.store.repo.DataStoreRepository,
+    private var gson: Gson
 ) :
     BaseViewModel() {
 
     private var groups = MutableLiveData<Map<String, List<ThreeHoursModel>>>()
     private var forecast = MutableLiveData<ResultWrapper<ForecastBaseModel>>()
-    val TAG = "Forecast ViewModel"
     private val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    var outFormat = SimpleDateFormat("EEE", Locale.getDefault())
-
-
-    init {
-        Log.d(TAG, "Forecast ViewModel")
-    }
-
+    private var outFormat = SimpleDateFormat("EEE", Locale.getDefault())
     fun observeForecast(
         lat: String,
         lon: String,
@@ -74,7 +65,7 @@ class ForecastViewModel @Inject constructor(
         result.let {
             groups.postValue(it.value.list.groupBy { item ->
                 val date = format.parse(item.dt_txt)
-                outFormat.format(date ?: return);
+                outFormat.format(date ?: return)
             })
         }
     }

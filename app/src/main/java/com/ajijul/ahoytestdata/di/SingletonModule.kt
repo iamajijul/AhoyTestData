@@ -17,7 +17,6 @@ object SingletonModule {
     @Provides
     fun provideDataStoreRepository(
         @ApplicationContext app: Context
-    ): com.ajijul.store.repo.DataStoreRepository =
-        com.ajijul.store.repo.DataStoreRepositoryImplementation(app)
+    ): DataStoreRepository = DataStoreRepositoryImplementation(app)
 
 }

@@ -99,7 +99,7 @@ class ForecastPerDayReportFragment : BaseFragment() {
         val entries =
             ArrayList<Entry>()
         val xAXES = ArrayList<String>()
-        llFooter.setWeightSum(tempModels.size.toFloat())
+        llFooter.weightSum = tempModels.size.toFloat()
         for (i in tempModels.indices) {
             entries.add(
                 Entry(

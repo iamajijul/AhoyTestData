@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentWeatherBinding
@@ -27,7 +26,7 @@ class WeatherFragment : BaseFragment() {
 
     private val weatherViewModel: WeatherViewModel by activityViewModels()
     private val favourViewModel: FavourViewModel by activityViewModels()
-    lateinit var binding: FragmentWeatherBinding
+    private lateinit var binding: FragmentWeatherBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
