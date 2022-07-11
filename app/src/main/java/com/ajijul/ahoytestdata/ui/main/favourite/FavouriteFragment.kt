@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ajijul.ahoytestdata.R
 import com.ajijul.ahoytestdata.base.BaseFragment
 import com.ajijul.ahoytestdata.databinding.FragmentFavouriteBinding
+import com.ajijul.ahoytestdata.ui.main.weather.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -18,6 +20,7 @@ class FavouriteFragment : BaseFragment() {
 
     private lateinit var adapter: FavouriteAdapter
     private val favourViewModel: FavourViewModel by activityViewModels()
+    private val weatherViewModel: WeatherViewModel by activityViewModels()
     lateinit var binding: FragmentFavouriteBinding
     private var favouriteList: ArrayList<String> = ArrayList()
     override fun onCreateView(
@@ -33,14 +36,17 @@ class FavouriteFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
-        favourViewModel._favouriteList.observe(viewLifecycleOwner){
+        favourViewModel._favouriteList.observe(viewLifecycleOwner) {
             adapter.informMe(it)
         }
     }
 
     private fun initializeRecyclerView() {
         binding.rvFavCity.layoutManager = LinearLayoutManager(requireContext())
-        adapter = FavouriteAdapter(favouriteList)
+        adapter = FavouriteAdapter(favouriteList){
+            weatherViewModel.fetchForCity(it)
+            findNavController().navigate(R.id.move_to_weather_screen)
+        }
         binding.rvFavCity.adapter = adapter
     }
 }

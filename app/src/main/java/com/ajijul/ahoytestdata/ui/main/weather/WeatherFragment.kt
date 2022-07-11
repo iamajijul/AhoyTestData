@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_weather.*
 @AndroidEntryPoint
 class WeatherFragment : BaseFragment() {
 
-    private val weatherViewModel: WeatherViewModel by viewModels()
+    private val weatherViewModel: WeatherViewModel by activityViewModels()
     private val favourViewModel: FavourViewModel by activityViewModels()
     lateinit var binding: FragmentWeatherBinding
     override fun onCreateView(
@@ -36,14 +36,6 @@ class WeatherFragment : BaseFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        weatherViewModel.fetchWeather(
-            "Dubai", Constants.API_KEY,
-            Network.checkConnectivity(requireContext())
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,10 +49,7 @@ class WeatherFragment : BaseFragment() {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 Helper.hideKeyboard(activity)
                 p0?.let {
-                    weatherViewModel.fetchWeather(
-                        it, Constants.API_KEY,
-                        Network.checkConnectivity(requireContext())
-                    )
+                    weatherViewModel.fetchForCity(p0)
                 }
                 return true
             }
@@ -95,6 +84,12 @@ class WeatherFragment : BaseFragment() {
                     ScreenState.ERROR -> handleProgress(false)
                 }
             }
+        }
+        weatherViewModel.getFetchForCityObserver().observe(viewLifecycleOwner){
+            weatherViewModel.fetchWeather(
+                it, Constants.API_KEY,
+                Network.checkConnectivity(requireContext())
+            )
         }
         getWeather()
     }

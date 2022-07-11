@@ -23,10 +23,12 @@ class WeatherViewModel @Inject constructor(
 ) :
     BaseViewModel() {
     private var weather = MutableLiveData<ResultWrapper<WeatherBaseModel>>()
+    private var fetchForCity = MutableLiveData<String>()
     val TAG = "Weather ViewModel"
 
 
     init {
+        fetchForCity("Dubai")
         Log.d(TAG, "Weather ViewModel")
     }
 
@@ -34,11 +36,19 @@ class WeatherViewModel @Inject constructor(
         return weather
     }
 
+    fun getFetchForCityObserver(): LiveData<String> {
+        return fetchForCity
+    }
+
+    fun fetchForCity(cityName: String){
+        fetchForCity.postValue(cityName)
+    }
+
     fun fetchWeather(
         cityName: String,
         apiKey: String,
         giveMeRemote: Boolean
-    ){
+    ) {
         if (weather.value != null && weather.value is ResultWrapper.Success<WeatherBaseModel>
             && (weather.value as ResultWrapper.Success<WeatherBaseModel>).value.name == cityName
         ) return
