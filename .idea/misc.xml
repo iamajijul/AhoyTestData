@@ -3,11 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/fav_selector.xml" value="0.144" />
+        <entry key="app/src/main/res/drawable/heart.xml" value="0.144" />
+        <entry key="app/src/main/res/drawable/heart_outline.xml" value="0.144" />
         <entry key="app/src/main/res/drawable/ic_forecast.xml" value="0.218" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/fragment_forecast.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/layout/fragment_perday_report.xml" value="0.19895833333333332" />
-        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.32864583333333336" />
+        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_menu_nav.xml" value="0.19895833333333332" />
       </map>
     </option>
